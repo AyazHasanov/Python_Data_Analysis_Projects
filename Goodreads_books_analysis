@@ -1,0 +1,16 @@
+# Importing relevant packages for data analysis
+
+# data file source: https://www.kaggle.com/datasets/jealousleopard/goodreadsbooks
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+
+# Uploading the file and reading its content to have some understanding
+
+# head() function is ued to review first rows quickly
+# shape function shows rows and columns - it shows we have 11127 rows and 13 columns
+
+df = pd.read_csv('books.csv')
+print(df.head())
+print(df.shape)
