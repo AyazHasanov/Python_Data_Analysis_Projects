@@ -82,9 +82,127 @@ cleaned_data = df.drop(columns=['Unnamed: 12'], errors='ignore')
 cleaned_data.head(5)
 
 
+	bookID	title	authors	average_rating	isbn	isbn13	language_code	num_pages	ratings_count	text_reviews_count	publication_date	publisher
+0	1	Harry Potter and the Half-Blood Prince (Harry ...	J.K. Rowling/Mary GrandPré	4.57	439785960	9.78044E+12	eng	652	2095690	27591	9/16/2006	Scholastic Inc.
+1	2	Harry Potter and the Order of the Phoenix (Har...	J.K. Rowling/Mary GrandPré	4.49	439358078	9.78044E+12	eng	870	2153167	29221	9/1/2004	Scholastic Inc.
+2	4	Harry Potter and the Chamber of Secrets (Harry...	J.K. Rowling	4.42	439554896	9.78044E+12	eng	352	6333	244	11/1/2003	Scholastic
+3	5	Harry Potter and the Prisoner of Azkaban (Harr...	J.K. Rowling/Mary GrandPré	4.56	043965548X	9.78044E+12	eng	435	2339585	36325	5/1/2004	Scholastic Inc.
+4	8	Harry Potter Boxed Set Books 1-5 (Harry Potte...	J.K. Rowling/Mary GrandPré	4.78	439682584	9.78044E+12	eng	2690	41428	164	9/13/2004	Scholastic
 
-index,bookID,title,authors,average_rating,isbn,isbn13,language_code,  num_pages,ratings_count,text_reviews_count,publication_date,publisher
-0,1,Harry Potter and the Half-Blood Prince (Harry Potter  #6),J.K. Rowling/Mary GrandPré,4.57,439785960,9.78044E+12,eng,652,2095690,27591,9/16/2006,Scholastic Inc.
-1,2,Harry Potter and the Order of the Phoenix (Harry Potter  #5),J.K. Rowling/Mary GrandPré,4.49,439358078,9.78044E+12,eng,870,2153167,29221,9/1/2004,Scholastic Inc.
-2,4,Harry Potter and the Chamber of Secrets (Harry Potter  #2),J.K. Rowling,4.42,439554896,9.78044E+12,eng,352,6333,244,11/1/2003,Scholastic
+
+
+# Check for duplicate rows and result shows there is not any duplicated values
+duplicates = df.duplicated().sum()
+duplicates
+
+0
+
+
+# to see which columns have data type and making conversion where necessary
+
+# below columns show that average_rating, num_pages can be converted to numeric data type, punlication_date can be converted to date column
+
+cleaned_data.info()
+
+
+
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 11127 entries, 0 to 11126
+Data columns (total 12 columns):
+ #   Column              Non-Null Count  Dtype 
+---  ------              --------------  ----- 
+ 0   bookID              11127 non-null  int64 
+ 1   title               11127 non-null  object
+ 2   authors             11127 non-null  object
+ 3   average_rating      11127 non-null  object
+ 4   isbn                11127 non-null  object
+ 5   isbn13              11127 non-null  object
+ 6   language_code       11127 non-null  object
+ 7     num_pages         11127 non-null  object
+ 8   ratings_count       11127 non-null  int64 
+ 9   text_reviews_count  11127 non-null  int64 
+ 10  publication_date    11127 non-null  object
+ 11  publisher           11126 non-null  object
+dtypes: int64(3), object(9)
+memory usage: 1.0+ MB
+
+
+
+
+# Convert 'publication_date' to datetime
+cleaned_data['publication_date'] = pd.to_datetime(df['publication_date'], errors='coerce')
+
+# Convert 'average_rating' to numeric, handling any errors
+cleaned_data['average_rating'] = pd.to_numeric(cleaned_data['average_rating'], errors='coerce')
+
+# Strip any leading or trailing spaces from column names, because above num_pages column has trailing space
+cleaned_data.columns = cleaned_data.columns.str.strip()
+
+# Convert 'num_pages' to numeric, handling any errors
+cleaned_data['num_pages'] = pd.to_numeric(cleaned_data['num_pages'], errors='coerce')
+
+cleaned_data.info()
+
+
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 11127 entries, 0 to 11126
+Data columns (total 12 columns):
+ #   Column              Non-Null Count  Dtype         
+---  ------              --------------  -----         
+ 0   bookID              11127 non-null  int64         
+ 1   title               11127 non-null  object        
+ 2   authors             11127 non-null  object        
+ 3   average_rating      11123 non-null  float64       
+ 4   isbn                11127 non-null  object        
+ 5   isbn13              11127 non-null  object        
+ 6   language_code       11127 non-null  object        
+ 7   num_pages           11123 non-null  float64       
+ 8   ratings_count       11127 non-null  int64         
+ 9   text_reviews_count  11127 non-null  int64         
+ 10  publication_date    11121 non-null  datetime64[ns]
+ 11  publisher           11126 non-null  object        
+dtypes: datetime64[ns](1), float64(2), int64(3), object(6)
+memory usage: 1.0+ MB
+
+
+
+# We can use describe() column for numeric columns to have some understanding
+
+numeric_summary = cleaned_data[['average_rating', 'num_pages', 'ratings_count', 'text_reviews_count']].describe()
+
+numeric_summary
+
+
+	average_rating	num_pages	ratings_count	text_reviews_count
+count	11123.000000	11123.000000	1.112700e+04	11127.000000
+mean	3.934075	336.405556	1.793649e+04	541.864474
+std	0.350485	241.152626	1.124794e+05	2576.174610
+min	0.000000	0.000000	0.000000e+00	0.000000
+25%	3.770000	192.000000	1.040000e+02	9.000000
+50%	3.960000	299.000000	7.450000e+02	47.000000
+75%	4.140000	416.000000	4.993500e+03	237.500000
+max	5.000000	6576.000000	4.597666e+06	94265.000000
+
+
+
+# Now after cleaning we can get some insights and visualize it accordingly
+
+# 1. Explore Top-Rated Books
+top_rated_books = cleaned_data.sort_values(by='average_rating', ascending=False).head(10)
+
+top_rated_books.head(10)
+
+
+	bookID	title	authors	average_rating	isbn	isbn13	language_code	num_pages	ratings_count	text_reviews_count	publication_date	publisher
+5650	20957	Colossians and Philemon: A Critical and Exeget...	R. McL. Wilson	5	567044718	9.78057E+12	eng	512	1	0	12/7/2005	T&T Clark Int'l
+1243	4287	Middlesex Borough (Images of America: New Jersey)	Middlesex Borough Heritage Committee	5	738511676	9.78074E+12	eng	128	2	0	3/17/2003	Arcadia Publishing
+5649	20954	Winchester Shotguns	Dennis Adler/R.L. Wilson	5	785821082	9.78079E+12	eng	372	2	0	5/15/2008	Chartwell Books
+6778	25426	Delwau Duon: Peintiadau Nicholas Evans = Symph...	Nicholas Evans/Rhonda Evans	5	862431352	9.78086E+12	wel	150	1	0	6/22/1987	Y Lolfa
+4935	17830	Bulgakov's the Master and Margarita: The Text ...	Elena N. Mahlow	5	533017424	9.78053E+12	eng	202	4	0	1/1/1975	Vantage Press
+9897	39829	His Princess Devotional: A Royal Encounter Wit...	Sheri Rose Shepherd	5	1590529626	9.78159E+12	eng	240	2	0	10/16/2007	Multnomah
+9286	36492	Oliver Wendell Holmes in Paris: Medicine Theo...	William C. Dowling	5	1584655801	9.78158E+12	eng	179	1	1	2/28/2007	University Press of New England
+786	2560	Willem de Kooning: Late Paintings	Julie Sylvester/David Sylvester	5	382960226X	9.78383E+12	eng	83	1	0	9/1/2006	Schirmer Mosel
+4126	14741	Zone of the Enders: The 2nd Runner Official St...	Tim Bogenn	5	744002354	9.78074E+12	eng	128	2	0	3/6/2003	BradyGames
+9851	39580	The American Campaign: U.S. Presidential Campa...	James E. Campbell	5	089096940X	9.78089E+12	eng	314	0	0	5/1/2000	Texas A&M University Press
+
 
