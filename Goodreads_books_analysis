@@ -44,3 +44,47 @@ print(df.shape)
 3         5/1/2004  Scholastic Inc.         NaN  
 4        9/13/2004       Scholastic         NaN  
 (11127, 13)
+
+
+
+# As the first step of data analysis we can do some data cleaning to check missing or duplicated data and etc.
+
+
+# Check for missing values
+missing_values = df.isnull().sum()
+missing_values
+
+
+	0
+bookID	0
+title	0
+authors	0
+average_rating	0
+isbn	0
+isbn13	0
+language_code	0
+num_pages	0
+ratings_count	0
+text_reviews_count	0
+publication_date	0
+publisher	1
+Unnamed: 12	11124
+
+dtype: int64
+
+
+
+# missing_values series shows that last column (unnames: 12) contains 11.124 missing values (out of 11127 rows )
+# so it can be dropped to have clean dataset
+
+cleaned_data = df.drop(columns=['Unnamed: 12'], errors='ignore')
+
+cleaned_data.head(5)
+
+
+
+index,bookID,title,authors,average_rating,isbn,isbn13,language_code,  num_pages,ratings_count,text_reviews_count,publication_date,publisher
+0,1,Harry Potter and the Half-Blood Prince (Harry Potter  #6),J.K. Rowling/Mary GrandPré,4.57,439785960,9.78044E+12,eng,652,2095690,27591,9/16/2006,Scholastic Inc.
+1,2,Harry Potter and the Order of the Phoenix (Harry Potter  #5),J.K. Rowling/Mary GrandPré,4.49,439358078,9.78044E+12,eng,870,2153167,29221,9/1/2004,Scholastic Inc.
+2,4,Harry Potter and the Chamber of Secrets (Harry Potter  #2),J.K. Rowling,4.42,439554896,9.78044E+12,eng,352,6333,244,11/1/2003,Scholastic
+
