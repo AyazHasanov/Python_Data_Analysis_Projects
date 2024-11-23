@@ -14,3 +14,33 @@ import matplotlib.pyplot as plt
 df = pd.read_csv('books.csv')
 print(df.head())
 print(df.shape)
+
+
+  bookID                                              title  \
+0       1  Harry Potter and the Half-Blood Prince (Harry ...   
+1       2  Harry Potter and the Order of the Phoenix (Har...   
+2       4  Harry Potter and the Chamber of Secrets (Harry...   
+3       5  Harry Potter and the Prisoner of Azkaban (Harr...   
+4       8  Harry Potter Boxed Set  Books 1-5 (Harry Potte...   
+
+                      authors average_rating        isbn       isbn13  \
+0  J.K. Rowling/Mary GrandPré           4.57   439785960  9.78044E+12   
+1  J.K. Rowling/Mary GrandPré           4.49   439358078  9.78044E+12   
+2                J.K. Rowling           4.42   439554896  9.78044E+12   
+3  J.K. Rowling/Mary GrandPré           4.56  043965548X  9.78044E+12   
+4  J.K. Rowling/Mary GrandPré           4.78   439682584  9.78044E+12   
+
+  language_code   num_pages  ratings_count  text_reviews_count  \
+0           eng         652        2095690               27591   
+1           eng         870        2153167               29221   
+2           eng         352           6333                 244   
+3           eng         435        2339585               36325   
+4           eng        2690          41428                 164   
+
+  publication_date        publisher Unnamed: 12  
+0        9/16/2006  Scholastic Inc.         NaN  
+1         9/1/2004  Scholastic Inc.         NaN  
+2        11/1/2003       Scholastic         NaN  
+3         5/1/2004  Scholastic Inc.         NaN  
+4        9/13/2004       Scholastic         NaN  
+(11127, 13)
