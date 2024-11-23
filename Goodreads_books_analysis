@@ -206,3 +206,77 @@ top_rated_books.head(10)
 9851	39580	The American Campaign: U.S. Presidential Campa...	James E. Campbell	5	089096940X	9.78089E+12	eng	314	0	0	5/1/2000	Texas A&M University Press
 
 
+# 2. Analyze Publication Trends Over Time
+publication_trends = cleaned_data['publication_date'].dt.year.value_counts().sort_index()
+
+# Below code shows the peak number of books were sold at 2006 and upward trend
+# started at 1985
+
+number_of_books_per_year = cleaned_data['publication_date'].dt.year.value_counts().sort_values(ascending=False).head(25)
+number_of_books_per_year
+
+
+	count
+publication_date	
+2006.0	1700
+2005.0	1260
+2004.0	1069
+2003.0	931
+2002.0	798
+2001.0	656
+2000.0	533
+2007.0	518
+1999.0	450
+1998.0	396
+1997.0	290
+1996.0	250
+1995.0	249
+1994.0	220
+1992.0	183
+1993.0	165
+1991.0	151
+1989.0	118
+1990.0	117
+1987.0	88
+1988.0	77
+1984.0	73
+1986.0	72
+1985.0	62
+
+
+# 3. Top 10 Books by Language code
+books_by_language = cleaned_data['language_code'].value_counts().sort_values(ascending=False).head(10)
+
+books_by_language
+
+	count
+language_code	
+eng	8908
+en-US	1408
+spa	218
+en-GB	214
+fre	144
+ger	99
+jpn	46
+mul	19
+zho	14
+grc	11
+
+# 4. Top 10 Count of Books by Publisher
+books_by_publisher = cleaned_data['publisher'].value_counts().head(10).sort_values(ascending=False)
+books_by_publisher
+
+
+	count
+publisher	
+Vintage	318
+Penguin Books	261
+Penguin Classics	184
+Mariner Books	150
+Ballantine Books	144
+Harper Perennial	112
+HarperCollins	112
+Pocket Books	111
+Bantam	110
+VIZ Media LLC	88
+
